@@ -87,25 +87,38 @@ def generate_geomap():
     data_localized['Location Name'] = data_localized['state'] + ', ' + data_localized['country']
     latest_time = data_localized['posted_date'].max()
 
-    data_latest = data_localized[data_localized.posted_date == latest_time]
-    fig = px.scatter_geo(data_latest, lat='latitude', lon='longitude',
-                        color='deaths',
-                        color_continuous_scale='portland',
-                        size="confirmed", # size of markers, "Confirmed" is one of the columns of gapminder
-                        size_max=80,
-                        hover_name='Location Name',
-                        title={
-                            'text': f'2019-nCoV Confirmed Cases and Deaths as of \
+    data_resampled_list = []
+    for location in data_localized['Location Name'].unique().tolist():
+        data_resampled_list.append(
+            data_localized[
+                data_localized['Location Name'] == location
+                ].set_index(['posted_date']).resample('6H').max())
+
+    data_bydate = pd.concat(data_resampled_list).sort_index().reset_index().fillna(0)
+
+    data_bydate['Date'] = data_bydate['posted_date'].dt.strftime("%d %B %Y %H:%M")
+
+    fig = px.scatter_geo(data_bydate, lat='latitude', lon='longitude',
+                     color='deaths',
+                     color_continuous_scale='portland',
+                     size="confirmed", # size of markers, "Confirmed" is one of the columns of gapminder
+                     size_max=80,
+                     hover_name='Location Name',
+                     title={
+                         'text': f'2019-nCoV Confirmed Cases and Deaths as of \
 {latest_time.strftime("%d %B %Y %I:%M %p %Z")}',
-                            'y': 0.9,
-                            'x': 0.5,
-                            'xanchor': 'center',
-                            'yanchor': 'top',
-                            'font': {
-                                'size': 16
-                                },
-                        }
-                        )
+                          'y': 0.9,
+                          'x': 0.5,
+                          'xanchor': 'center',
+                          'yanchor': 'top',
+                          'font': {
+                            'size': 16
+                            },
+                      },
+                     animation_frame='Date',
+                     animation_group='confirmed',
+                     range_color=[0,data_bydate.deaths.max()]
+                     )
 
     fig.update_geos(
         resolution=50,
@@ -135,9 +148,15 @@ def generate_geomap():
         'responsive': True
     })
 
-
+    try:
+        os.mkdir('archives')
+    except FileExistsError:
+        pass
     os.chdir('archives')
-    os.mkdir(latest_time.strftime("%Y%m%d_%H%M"))
+    try:
+        os.mkdir(latest_time.strftime("%Y%m%d_%H%M"))
+    except FileExistsError:
+        pass
     os.chdir(latest_time.strftime("%Y%m%d_%H%M"))
 
     fig.write_html('index.html', config={
