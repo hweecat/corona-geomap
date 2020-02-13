@@ -105,7 +105,7 @@ def generate_geomap():
                      size_max=80,
                      hover_name='Location Name',
                      title={
-                         'text': f'2019-nCoV Confirmed Cases and Deaths as of \
+                         'text': f'COVID-19 Confirmed Cases and Deaths as of \
 {latest_time.strftime("%d %B %Y %I:%M %p %Z")}',
                           'y': 0.9,
                           'x': 0.5,
