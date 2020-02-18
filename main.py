@@ -92,7 +92,7 @@ def generate_geomap():
         data_resampled_list.append(
             data_localized[
                 data_localized['Location Name'] == location
-                ].set_index(['posted_date']).resample('12H').max())
+                ].set_index(['posted_date']).resample('D').max())
 
     data_bydate = pd.concat(data_resampled_list).sort_index().reset_index().fillna(0)
 
