@@ -18,7 +18,7 @@ import os
 def generate_geomap():
     """Using SQLAlchemy"""
 
-    engine = db.create_engine('mysql+mysqlconnector://' + os.environ.get('SQL_USER') + ':' + os.environ.get('SQL_PW') + '@coronatracker.coehycitad7u.ap-southeast-1.rds.amazonaws.com/coronatracker')
+    engine = db.create_engine('mysql+mysqlconnector://' + os.environ.get('SQL_USER') + ':' + os.environ.get('SQL_PW') + '@coronatrackerprod.coehycitad7u.ap-southeast-1.rds.amazonaws.com/coronatracker')
     connection = engine.connect()
     metadata = db.MetaData()
     print(metadata.tables)
