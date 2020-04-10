@@ -41,3 +41,8 @@ jobs:
         SQL_USER: ${{ secrets.SQL_USER }}
         SQL_PW: ${{ secrets.SQL_PW }}
       run: chmod +x main.py | python main.py
+    
+    - uses: stefanzweifel/git-auto-commit-action@v4.1.2
+      with:
+        commit_message: Update geomap index.html
+        branch: gh-pages
