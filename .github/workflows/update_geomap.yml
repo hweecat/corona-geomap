@@ -28,4 +28,4 @@ jobs:
       env: # Or as an environment variable
         SQL_USER: ${{ secrets.SQL_USER }}
         SQL_PW: ${{ secrets.SQL_PW }}
-      run: chmod +x deploy.sh | ./deploy.sh
+      run: chmod +x main.py | python main.py
