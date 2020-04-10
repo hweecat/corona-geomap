@@ -8,7 +8,7 @@ geopandas==0.6.2
 munch==2.5.0
 mysql-connector-python==8.0.19
 numpy==1.18.1
-pandas==1.0.0
+pandas==0.25.3
 plotly==4.5.0
 protobuf==3.6.1
 pyproj==2.4.2.post1
