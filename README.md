@@ -2,10 +2,13 @@
 
 Geo-visualization of COVID-19 confirmed cases and deaths using Plotly, with automated updates using GitHub Actions.
 
+Netlify-ed version on https://geomap.ongchinhwee.me
+
 Author: Ong Chin Hwee (@hweecat)
 
 ## Key Dependencies
 Works on Python 3.6, 3.7
+
 Pandas 0.25.x (breaks on Pandas 1.0.x, not backward-compatible with Pandas 0.24.x and below due to tz-aware timestamps)
 
 ## Why did I create this?
