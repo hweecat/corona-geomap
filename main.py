@@ -18,7 +18,7 @@ import os
 def generate_geomap():
     """Using SQLAlchemy"""
 
-    engine = db.create_engine('mysql+mysqlconnector://' + os.environ.get('SQL_USER') + ':' + os.environ.get('SQL_PW') + '@coronatrackerprod.coehycitad7u.ap-southeast-1.rds.amazonaws.com/coronatracker')
+    engine = db.create_engine('mysql+mysqlconnector://' + os.environ.get('SQL_USER') + ':' + os.environ.get('SQL_PW') + '@coronatracker.coehycitad7u.ap-southeast-1.rds.amazonaws.com/coronatracker')
     connection = engine.connect()
     metadata = db.MetaData()
     print(metadata.tables)
@@ -52,36 +52,23 @@ def generate_geomap():
     for table in tables_infoschema:
         print(table)
 
-
     # Corona Tracker Master Table with data from arcgis
     with engine.connect() as conn, conn.begin():
         data = pd.read_sql('SELECT * FROM arcgis', conn, parse_dates=['last_update', 'posted_date'])
 
-
     data.rename(columns={'lat': 'latitude', 'lng': 'longitude'}, inplace=True)
-
 
     data['coordinates'] = data[['longitude', 'latitude']].values.tolist()
 
-
     data['coordinates'] = data['coordinates'].apply(Point)
 
-
     data = gpd.GeoDataFrame(data, geometry='coordinates')
-
-
 
     data['deaths'] = data['deaths'].fillna(value=0)
     data['confirmed'] = data['confirmed'].fillna(value=0)
     data['recovered'] = data['recovered'].fillna(value=0)
 
-
-
     data_localized = data.set_index('posted_date').tz_localize(tz='GMT').reset_index()
-
-    data_localized
-
-
 
     data_localized['state'] = data_localized['state'].fillna(value='')
     data_localized['Location Name'] = data_localized['state'] + ', ' + data_localized['country']
@@ -130,7 +117,7 @@ def generate_geomap():
                 x=1.0,
                 y=-0.15,
                 showarrow=False,
-                text="Geomap by: @hweecat",
+                text="Geomap by: <a href='https://ongchinhwee.me'>Ong Chin Hwee</a>",
                 xref="paper",
                 yref="paper"
             ),
