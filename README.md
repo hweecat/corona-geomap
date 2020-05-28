@@ -6,6 +6,8 @@ Netlify-ed version on https://geomap.ongchinhwee.me
 
 Author: Ong Chin Hwee (@hweecat)
 
+### [UPDATE] Due to changes in CoronaTracker backend DB configuration, GitHub Actions workflow has been temporarily stopped until I resolve the new DB configuration and data manipulation.
+
 ## Key Dependencies
 Works on Python 3.6, 3.7
 
